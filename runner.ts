@@ -4,7 +4,7 @@ import { RunOutcome } from './types';
 export interface ClaudeInvocation { command:string; args:string[]; cwd:string; }
 export function buildInvocation(command:string,prompt:string,mode:string,cwd:string,resume?:string):ClaudeInvocation {
   if (!command || command.startsWith('-') || /[\r\n\0]/.test(command)) throw new Error('Invalid CLI executable.');
-  const tools = mode === 'edit' ? 'Read,Edit,Write' : 'Read';
+  const tools = mode === 'edit' ? 'Read,Edit,Write' : 'Read,Glob,Grep';
   const args=['--safe-mode','--restricted','-p','--output-format','json','--tools',tools,'--allowedTools',tools,
     '--permission-mode','default','--permission-prompts','none','--strict-mcp-config','--mcp-config','{"mcpServers":{}}',
     '--settings','{"disableAllHooks":true}','--max-turns','12'];
@@ -42,4 +42,4 @@ export function runClaude(inv:ClaudeInvocation,prompt=''):RunningProcess {
     child.on('error',()=>{clearTimeout(timer);resolve({ok:false,resultText:'',exitCode:null,errorMessage:'Unable to start Claude. Check the configured executable and local login.'});});
     child.on('close',code=>{clearTimeout(timer);if(killTimer)clearTimeout(killTimer);const r=parseRunOutput(output,code,'');if(stopped){r.ok=false;r.interrupted=true;}if(overflow){r.resultText='';r.errorMessage='Output limit exceeded.';}resolve(r);});
   });return {promise,stop};
-    }
+}
