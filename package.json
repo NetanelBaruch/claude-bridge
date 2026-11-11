@@ -1,0 +1,154 @@
+{
+  "name": "claude-bridge",
+  "displayName": "Claude Bridge",
+  "description": "Turn GitHub issues into local Claude Code runs. Approval-gated, auditable, local-first: tasks arrive as labeled issues, Claude Code executes them in your project folder on your machine, and results post back as issue comments.",
+  "version": "0.2.0",
+  "publisher": "NetanelBaruch",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/NetanelBaruch/claude-bridge"
+  },
+  "engines": {
+    "vscode": "^1.95.0"
+  },
+  "categories": [
+    "AI",
+    "Other"
+  ],
+  "keywords": [
+    "claude",
+    "claude-code",
+    "github",
+    "issues",
+    "automation",
+    "ai-agents"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "claude-bridge.checkNow",
+        "title": "Check for Tasks Now",
+        "category": "Claude Bridge"
+      },
+      {
+        "command": "claude-bridge.stopRun",
+        "title": "Stop Current Run",
+        "category": "Claude Bridge"
+      },
+      {
+        "command": "claude-bridge.setToken",
+        "title": "Set GitHub Token",
+        "category": "Claude Bridge"
+      },
+      {
+        "command": "claude-bridge.openQueue",
+        "title": "Open Task Queue on GitHub",
+        "category": "Claude Bridge"
+      },
+      {
+        "command": "claude-bridge.clearToken",
+        "title": "Clear GitHub Token",
+        "category": "Claude Bridge"
+      }
+    ],
+    "configuration": {
+      "title": "Claude Bridge",
+      "properties": {
+        "claudeBridge.owner": {
+          "type": "string",
+          "default": "",
+          "description": "GitHub owner (user or org) of the task-queue repository.",
+          "scope": "machine"
+        },
+        "claudeBridge.repo": {
+          "type": "string",
+          "default": "",
+          "description": "Name of the task-queue repository.",
+          "scope": "machine"
+        },
+        "claudeBridge.taskLabel": {
+          "type": "string",
+          "default": "claude-task",
+          "description": "Issues with this label are treated as tasks for local Claude Code runs.",
+          "scope": "machine"
+        },
+        "claudeBridge.pollIntervalSeconds": {
+          "type": "number",
+          "default": 300,
+          "minimum": 60,
+          "description": "How often to poll GitHub for new tasks and follow-ups.",
+          "scope": "machine"
+        },
+        "claudeBridge.projectFolder": {
+          "type": "string",
+          "default": "",
+          "description": "Folder Claude Code runs in. Empty means the current workspace root.",
+          "scope": "machine"
+        },
+        "claudeBridge.claudeCommand": {
+          "type": "string",
+          "default": "claude",
+          "description": "Claude Code CLI command or absolute path.",
+          "scope": "machine"
+        },
+        "claudeBridge.maxResultChars": {
+          "type": "number",
+          "default": 60000,
+          "description": "Maximum characters of a run result posted back to the issue.",
+          "maximum": 50000,
+          "minimum": 1000,
+          "scope": "machine"
+        },
+        "claudeBridge.allowedAuthors": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [],
+          "description": "Allowed GitHub logins. Empty permits only the authenticated token owner. Applies to issue authors and follow-up comments.",
+          "scope": "machine"
+        },
+        "claudeBridge.runMode": {
+          "type": "string",
+          "enum": [
+            "inspect",
+            "edit"
+          ],
+          "default": "inspect",
+          "description": "inspect: Read only. edit: Read,Edit,Write. No shell or network tools in either profile.",
+          "scope": "machine"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "compile": "tsc -p ./ --noEmit",
+    "build": "esbuild extension.ts --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node",
+    "test": "vitest run",
+    "package": "npm run compile && npm test && npm run build && vsce package --no-dependencies"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "@types/vscode": "^1.95.0",
+    "@vscode/test-electron": "^3.1.0",
+    "@vscode/vsce": "^3.6.2",
+    "esbuild": "^0.28.2",
+    "typescript": "~5.9.3",
+    "vitest": "^3.2.4"
+  },
+  "capabilities": {
+    "untrustedWorkspaces": {
+      "supported": false,
+      "description": "Local runs and GitHub access require a trusted workspace."
+    },
+    "virtualWorkspaces": false
+  },
+  "extensionKind": [
+    "workspace"
+  ]
+}
