@@ -2,7 +2,7 @@
   "name": "claude-bridge",
   "displayName": "Claude Bridge",
   "description": "Turn GitHub issues into local Claude Code runs. Approval-gated, auditable, local-first: tasks arrive as labeled issues, Claude Code executes them in your project folder on your machine, and results post back as issue comments.",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "publisher": "NetanelBaruch",
   "license": "MIT",
   "repository": {
