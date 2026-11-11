@@ -47,10 +47,10 @@ Background checks only update pending status. They never start a run or automati
 
 | Profile | Available built-in tools | Default |
 | --- | --- | --- |
-| `inspect` | Read | Yes |
+| `inspect` | Read, Glob, Grep | Yes |
 | `edit` | Read, Edit, Write | No |
 
-Neither profile exposes Bash, web tools, or MCP tools. Editing tasks can change files, but builds/tests that need shell commands must be run separately by you. The extension uses `--tools` for actual tool restriction, not merely `--allowedTools` auto-approval. Restricted mode confines built-in file tools to working directories according to Claude Code's rules. Safe mode suppresses ordinary project/user customizations; managed policies may still apply. This reduces risk but **is not OS-level isolation**.
+Neither profile exposes Bash, web tools, or MCP tools. The inspect profile can read files and discover them with Glob and Grep, but cannot change anything. Editing tasks can change files, but builds/tests that need shell commands must be run separately by you. The extension uses `--tools` for actual tool restriction, not merely `--allowedTools` auto-approval. Restricted mode confines built-in file tools to working directories according to Claude Code's rules. Safe mode suppresses ordinary project/user customizations; managed policies may still apply. This reduces risk but **is not OS-level isolation**.
 
 If the installed CLI does not support required flags, the bridge fails closed. It never retries with weaker permissions.
 
