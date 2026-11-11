@@ -20,7 +20,7 @@ This is an **early release**, not a security sandbox or a real-time remote deskt
 Download the `.vsix` release asset, then use VS Code -> Extensions -> `...` -> **Install from VSIX**. Alternatively:
 
 ```sh
-code --install-extension claude-bridge-0.2.0.vsix
+code --install-extension path/to/downloaded-file.vsix
 ```
 
 Requirements:
@@ -93,7 +93,7 @@ All are User Settings; workspace overrides are ignored.
 ## Build and checks
 
 ```sh
-npm ci
+npm install
 npm run compile
 npm test
 npm run package
